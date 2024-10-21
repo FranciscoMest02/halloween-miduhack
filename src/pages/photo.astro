@@ -1,0 +1,331 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCldImageUrl } from "astro-cloudinary/helpers";
+import '@fontsource/creepster'
+
+const backgrounds = [
+    "Dimly lit cobwebbed halls with flickering candlelight casting shadows",
+    "Dark misty woods with twisted trees and glowing eyes in the fog",
+    "Crooked tombstones overgrown vines and ghostly figures drifting",
+    "Dusty cluttered attic with eerie moonlight through cobwebbed windows",
+    "Dim shelves dusty books and whispers of ancient secrets"
+]
+
+const colors = [
+    { color: "E8E8E8", weight: 0.4, type: "poseido por fantasmas" }, // Ghosts - 40%
+    { color: "2B1B1B", weight: 0.35, type: "poseido por demonios" }, // Demons - 35%
+    { color: "8B0000", weight: 0.1, type: "maldicho por el Diablo" }, // Devil - 10%
+    { color: "4B0082", weight: 0.15, type: "encantado por brujas" } // Witches - 15%
+];
+
+function getRandomColor() {
+    const random = Math.random();
+    let cumulativeWeight = 0;
+
+    for (let i = 0; i < colors.length; i++) {
+        cumulativeWeight += colors[i].weight;
+        if (random < cumulativeWeight) {
+            return colors[i];
+        }
+    }
+}
+
+function getRandomBackground() {
+    const index = Math.floor(Math.random() * backgrounds.length);
+    return backgrounds[index];
+}
+
+const {searchParams} = Astro.url;
+const id = searchParams.get("id");
+if(id==null) return Astro.redirect("/");
+const color = getRandomColor()
+const url = getCldImageUrl({src: id, 
+    replaceBackground: getRandomBackground(),
+    recolor: ["most importat item", color.color]
+});
+---
+
+<Layout title="Uploaded foto">
+  <main class="min-h-screen flex flex-col items-center justify-center p-8">
+    <div class="loading-container relative w-full">
+      <div class="loading-text absolute inset-0 flex flex-col items-center justify-center">
+        <span class="loader"></span>
+        <p class="text-lg md:text-2xl text-center font-bold my-4 loading-message text-swhite">🪄 Contactando con los magos mas poderosos del mundo...</p>
+        <div class="loading-messages hidden text-swhite w-full">
+          <p>🔦 Iluminando los rincones oscuros del objeto...</p>
+          <p>🔍 Buscando rastros de magia residual...</p>
+          <p>🕸️ Tejiendo conexiones con el mundo espiritual...</p>
+          <p>🔮 Escaneando el aura mágica del objeto...</p>
+          <p>⚡ Detectando presencias encantadas....</p>
+          <p>📜 Desenrollando pergaminos de magia ancestral...</p>
+          <p>🖤 Detectando signos de posesión sobrenatural...</p>
+          <p>🕯️ Convocando antiguas fuerzas para revelar secretos...</p>
+          <p>🧩 Desbloqueando encantamientos ocultos...</p>
+          <p>🌑 Sumergiéndose en las sombras para encontrar respuestas...</p>
+        </div>
+      </div>
+      
+      <div id="image-results" class="hidden flex-col gap-md items-center">
+        <div class="flex items-center">
+            <!-- We'll set the src after our JavaScript runs -->
+            <img 
+              class="image-hidden w-[700px] max-w-full h-auto rounded-md"
+              id="main-image"
+              alt="Processed photo"
+            />
+        </div>
+
+        <div id="moreinfo-loading" class="flex flex-col gap-md justify-center items-center max-w-2xl mt-8">
+          <span class="loader2"></span>
+          <p class="text-lg font-bold my-4 text-swhite">Extrayendo más información del más allá</p>
+        </div>        
+
+        <div id="details" class="transition-all duration-300 ease-in-out opacity-0 h-0 invisible text-swhite flex-1 max-w-2xl">
+          <div class="flex flex-col items-center">
+            <h1 id="name-results" class="text-3xl text-sgreen mt-4 text-creepster"></h1>
+            <p class="mt-2 text-sm">Este objeto fue <span>{color.type}</span></p>
+          </div>
+            <p id="source-of-truth" class="mt-6">Identificando origen del objeto...</p>
+            <div class="flex justify-center w-full mt-12">
+              <a href="/collection" id="collectionLink" class="bg-spurple text-swhite text-lg px-4 py-2 rounded-xl w-fit h-fit">Guardar en la colección</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .text-creepster {
+		font-family: "Creepster", cursive;
+	}
+
+  .loading-container {
+    min-height: 300px;
+    min-width: 300px;
+  }
+  
+  .loading-text {
+    opacity: 1;
+    transition: opacity 0.5s;
+  }
+  
+  .loading-text.hidden {
+    display: none;
+  }
+
+  .image-hidden {
+    display: none;
+  }
+
+  .image-visible {
+    display: block;
+  }
+
+.loader {
+          position: relative;
+          width: 78px;
+          height: 78px;
+          border-radius: 50%;
+          box-sizing: border-box;
+          background: #fff;
+          border: 8px solid #131a1d;
+          overflow: hidden;
+          box-sizing: border-box;
+        }
+        .loader::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: -50%;
+          width: 100%;
+          height: 100%;
+          background: #263238 ;
+          z-index: 5;
+          border-bottom: 8px solid #131a1d;
+          box-sizing: border-box;
+          animation: eyeShade 3s infinite;
+        }
+        .loader::before {
+          content: '';
+          position: absolute;
+          left: 20px;
+          bottom: 15px;
+          width: 32px;
+          z-index: 2;
+          height: 32px;
+          background: #111;
+          border-radius: 50%;
+          animation: eyeMove 3s infinite;
+        }
+        @keyframes eyeShade {
+          0%   { transform: translateY(0)}
+          20%   { transform: translateY(5px)}
+          40% , 50%   { transform: translateY(-5px)}
+          60%   { transform: translateY( -8px)}
+          75%   { transform: translateY( 5px)}
+          100%   { transform: translateY(10px)}
+        }
+        @keyframes eyeMove {
+          0%   { transform: translate(0 , 0)}
+          20%   { transform: translate(0px , 5px)}
+          40% , 50%   { transform: translate(0px , -5px)}
+          60%   { transform: translate(-10px , -5px)}
+          75%   { transform: translate(-20px , 5px)}
+          100%   { transform: translate(0 , 10px)}
+        }
+
+
+  .loader2 {
+  width: 48px;
+  height: 48px;
+  border: 3px dotted #FFF;
+  border-style: solid solid dotted dotted;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+.loader2::after {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px dotted #9B7EDE;
+  border-style: solid solid dotted;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  animation: rotationBack 1s linear infinite;
+  transform-origin: center center;
+}
+    
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}         
+</style>
+
+<script define:vars={{ url, color }}>
+  const messages = Array.from(document.querySelectorAll('.loading-messages p'));
+  const loadingMessage = document.querySelector('.loading-message');
+  const loadingText = document.querySelector('.loading-text');
+  const image = document.getElementById('main-image');
+  const $resultDiv = document.getElementById("image-results")
+  const $details = document.getElementById("details")
+  const $nameElement = document.getElementById("name-results")
+  const $historiaElement = document.getElementById("source-of-truth")
+  const $moreInfoLoader = document.getElementById("moreinfo-loading")
+  let currentIndex = 0;
+
+  // Change messages every 2 seconds
+  const messageInterval = setInterval(() => {
+    if (loadingMessage) {
+      loadingMessage.textContent = messages[currentIndex].textContent;
+      currentIndex = (currentIndex + 1) % messages.length;
+    }
+  }, 2000);
+
+  async function getImageDescription(imageUrl) {
+  try {
+    const response = await fetch('/api/spookyDescription', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ imageUrl, info: color.type })
+    });
+    
+    if (!response.ok) {
+        console.log(response)
+      throw new Error('Failed to get image description');
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error getting image description:', error);
+    return null;
+  }
+}
+
+  async function showImage() {
+    clearInterval(messageInterval);
+    if (loadingText) {
+      loadingText.classList.add('hidden');
+    }
+    if (image) {
+      image.classList.remove('image-hidden');
+      image.classList.add('image-visible');
+      $resultDiv.classList.remove('hidden');
+      $resultDiv.classList.add('flex');
+
+      try {
+        const spookyObject = await getImageDescription(url);
+        console.log('Received object:', spookyObject); // Debug log
+
+        //const spookyObject = JSON.parse(object)
+
+        if (spookyObject && spookyObject.historia && spookyObject.nombre) {
+          $historiaElement.textContent = spookyObject.historia ?? "";
+          $nameElement.textContent = spookyObject.nombre ?? "";
+
+          // Actualizar el href del enlace con los parámetros
+          const collectionLink = document.getElementById('collectionLink');
+          if (collectionLink) {
+            const params = new URLSearchParams({
+              name: spookyObject.nombre,
+              description: spookyObject.historia,
+              possesed: color.type,
+              img: url,
+            });
+            
+            collectionLink.href = `/collection?${params.toString()}`;
+          }
+
+
+          $moreInfoLoader.classList.add("hidden")
+          $details.classList.remove('opacity-0', 'h-0', 'invisible');
+          $details.classList.add('opacity-100', 'h-auto', 'visible');
+        } else {
+          console.error('Invalid response format:', spookyObject);
+          $moreInfoLoader.textContent = "La conexion espiritual se cerro y hubo un error al cargar la infomacion del objeto maldito. Por favor recarga la pagina para reestablecer el contacto con el mas alla...";
+        }
+      } catch (error) {
+        console.error('Failed to get description:', error);
+        $moreInfoLoader.textContent = "La conexion espiritual se cerro y hubo un error al cargar la infomacion del objeto maldito. Por favor recarga la pagina para reestablecer el contacto con el mas alla...";
+      }
+    }
+  }
+
+  if (image) {
+    // Create a new Image object to preload
+    const imageLoader = new Image();
+    
+    imageLoader.onload = () => {
+      // Once preloaded, set the src to our actual image element
+      image.src = url;
+      showImage();
+    };
+
+    // Start loading the image
+    imageLoader.src = url;
+  }
+</script>

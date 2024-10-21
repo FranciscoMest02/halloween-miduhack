@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { infoData } from "../store/information"
+import '@fontsource/creepster'
+
+const {searchParams} = Astro.url;
+const id = searchParams.get("id");
+if(id==null) return Astro.redirect("/");
+const data = infoData.getItem(id)
+---
+
+<Layout title={data.name}>
+    <main class="flex justify-center w-full mt-16 px-8 mb-16">
+        <div id="image-results" class=" flex-col gap-md items-center">
+            <div class="flex items-center">
+                <img 
+                  class=" w-[700px] max-w-full h-auto rounded-md"
+                  id="main-image"
+                  alt={`Foto de ${data.name}`}
+                  src={`${data.img}`}
+
+                />
+            </div>
+            <div id="details" class="transition-all duration-300 ease-in-out text-swhite flex-1 max-w-2xl">
+                <div class="flex flex-col items-center">
+                  <h1 id="name-results" class="text-3xl text-sgreen mt-4 text-creepster">{data.name}</h1>
+                  <p class="mt-2 text-sm">Este objeto fue <span>{data.possesed}</span></p>
+                </div>
+                  <p id="source-of-truth" class="mt-6">{data.description}</p>
+                  <div class="flex justify-center w-full mt-12">
+                      <a href="/collection" class="bg-spurple text-swhite text-lg px-4 py-2 rounded-xl w-fit h-fit">Volver a la colección</a>
+                  </div>
+              </div>
+          </div>
+        
+    </main>
+</Layout>
+
+<style>
+    .text-creepster {
+		font-family: "Creepster", cursive;
+	}
+</style>
