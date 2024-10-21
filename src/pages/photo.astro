@@ -75,7 +75,7 @@ const url = getCldImageUrl({src: id,
             />
         </div>
 
-        <div id="moreinfo-loading" class="flex flex-col gap-md justify-center items-center max-w-2xl mt-8">
+        <div id="moreinfo-loading" class="flex flex-col gap-md justify-center items-center max-w-2xl mt-8 text-swhite text-lg">
           <span class="loader2"></span>
           <p class="text-lg font-bold my-4 text-swhite">Extrayendo más información del más allá</p>
         </div>        
@@ -306,11 +306,11 @@ const url = getCldImageUrl({src: id,
           $details.classList.add('opacity-100', 'h-auto', 'visible');
         } else {
           console.error('Invalid response format:', spookyObject);
-          $moreInfoLoader.textContent = "La conexion espiritual se cerro y hubo un error al cargar la infomacion del objeto maldito. Por favor recarga la pagina para reestablecer el contacto con el mas alla...";
+          $moreInfoLoader.textContent = "La conexion espiritual se cerro y hubo un error al cargar la infomacion del objeto maldito. Por favor recarga la pagina para reestablecer el contacto con los espiritus del mas alla...";
         }
       } catch (error) {
         console.error('Failed to get description:', error);
-        $moreInfoLoader.textContent = "La conexion espiritual se cerro y hubo un error al cargar la infomacion del objeto maldito. Por favor recarga la pagina para reestablecer el contacto con el mas alla...";
+        $moreInfoLoader.textContent = "La conexion espiritual se cerro y hubo un error al cargar la infomacion del objeto maldito. Por favor recarga la pagina para reestablecer el contacto con los espiritus del mas alla...";
       }
     }
   }
